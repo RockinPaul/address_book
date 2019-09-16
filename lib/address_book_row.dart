@@ -4,7 +4,7 @@ class AddressBookRow extends StatelessWidget {
   final String contact;
   final Function onTap;
 
-  const AddressBookRow({Key key, this.contact, this.onTap}) : super(key: key);
+  AddressBookRow({Key key, this.contact, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

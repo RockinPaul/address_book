@@ -15,13 +15,27 @@ class _AddressBookState extends State<AddressBook> {
   Widget build(BuildContext context) {
     List<String> _keys = widget.contacts.keys.toList();
     List<List<String>> _values = widget.contacts.values.toList();
+
+    // For scrolling API
+    Map<String, double> offsets = Map<String, double>();
+    int values = 0;
+    double offset = 0.0;
+    for (int i = 0; i < _keys.length; i++) {
+      offsets[_keys[i]] = offset;
+      String key = _keys[i];
+      values = widget.contacts[key].length;
+      offset += values * 50 + 40;
+    }
+
+    print(offsets);
+
     ScrollController _scrollController = new ScrollController();
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _scrollController.animateTo(
-            0.0,
+            370,
             curve: Curves.easeOut,
             duration: const Duration(milliseconds: 300),
           );

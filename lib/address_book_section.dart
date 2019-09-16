@@ -18,6 +18,7 @@ class AddressBookSection extends StatelessWidget {
           color: Colors.lightBlueAccent,
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
           width: BoxConstraints.expand().maxWidth,
+          height: 40,
           child: Text(
             title,
             textAlign: TextAlign.left,

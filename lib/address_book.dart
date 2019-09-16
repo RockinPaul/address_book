@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:address_book/address_book_section.dart';
+import 'package:address_book/search.dart';
+
+const double CELL_HEIGHT = 50.0;
+const double HEADER_HEIGHT = 40.0;
 
 class AddressBook extends StatefulWidget {
   final Map<String, List<String>> contacts;
+  final String sectionToGo;
 
-  const AddressBook({Key key, this.contacts}) : super(key: key);
+  const AddressBook({Key key, this.contacts, this.sectionToGo})
+      : super(key: key);
 
   @override
   _AddressBookState createState() => _AddressBookState();
@@ -16,7 +22,7 @@ class _AddressBookState extends State<AddressBook> {
     List<String> _keys = widget.contacts.keys.toList();
     List<List<String>> _values = widget.contacts.values.toList();
 
-    // For scrolling API
+    // Compose offsets for scrolling API
     Map<String, double> offsets = Map<String, double>();
     int values = 0;
     double offset = 0.0;
@@ -24,10 +30,8 @@ class _AddressBookState extends State<AddressBook> {
       offsets[_keys[i]] = offset;
       String key = _keys[i];
       values = widget.contacts[key].length;
-      offset += values * 50 + 40;
+      offset += values * CELL_HEIGHT + HEADER_HEIGHT;
     }
-
-    print(offsets);
 
     ScrollController _scrollController = new ScrollController();
 
@@ -35,7 +39,7 @@ class _AddressBookState extends State<AddressBook> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _scrollController.animateTo(
-            370,
+            offsets[widget.sectionToGo.toUpperCase()],
             curve: Curves.easeOut,
             duration: const Duration(milliseconds: 300),
           );
@@ -50,7 +54,7 @@ class _AddressBookState extends State<AddressBook> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: ContactSearch(widget.contacts),
+                delegate: Search(widget.contacts),
               );
             },
           )
@@ -77,71 +81,5 @@ class _AddressBookState extends State<AddressBook> {
         ],
       ),
     );
-  }
-}
-
-class ContactSearch extends SearchDelegate<String> {
-  final Map<String, List<String>> contacts;
-
-  ContactSearch(this.contacts);
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return Container();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    List<String> _keys = contacts.keys.toList();
-    List<List<String>> _values = contacts.values.toList();
-
-    String keySuggestion;
-    List<String> results = List<String>();
-
-    if (query.length > 0) {
-      keySuggestion = _keys.firstWhere(
-        (key) => key.toLowerCase() == query.substring(0, 1).toLowerCase(),
-        orElse: () => "",
-      );
-      if (contacts[keySuggestion] != null) {
-        results = contacts[keySuggestion].where((contact) {
-          return contact.toLowerCase().contains(query.toLowerCase());
-        }).toList();
-      }
-    }
-
-    print(keySuggestion);
-    print(results);
-
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: results.length != 0 ? 1 : contacts.length,
-        itemBuilder: (BuildContext context, int index) {
-          return AddressBookSection(
-              title: results.length != 0 ? keySuggestion : _keys[index],
-              contacts: results.length != 0 ? results : _values[index]);
-        });
   }
 }

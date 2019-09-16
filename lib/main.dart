@@ -33,10 +33,6 @@ class MyApp extends StatelessWidget {
     print(groupedContacts);
 
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: HeaderRowListView(
         contacts: groupedContacts,
       ), //MyHomePage(title: 'Flutter Demo Home Page'),

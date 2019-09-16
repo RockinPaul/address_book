@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     print(groupedContacts);
 
     return MaterialApp(
-      home: HeaderRowListView(
+      home: AddressBook(
         contacts: groupedContacts,
       ), //MyHomePage(title: 'Flutter Demo Home Page'),
     );

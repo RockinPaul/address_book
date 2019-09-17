@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class AddressBookRow extends StatelessWidget {
   final String contact;
   final Function onTap;
+  final double height;
 
-  AddressBookRow({Key key, this.contact, this.onTap}) : super(key: key);
+  AddressBookRow({Key key, this.contact, this.onTap, this.height = 50}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class AddressBookRow extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(20, 15, 20, 0),
-            height: 50,
+            height: height,
             child: Text(contact),
           ),
           Divider(

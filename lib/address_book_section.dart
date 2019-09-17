@@ -5,8 +5,15 @@ import 'package:address_book/contact_info.dart';
 class AddressBookSection extends StatelessWidget {
   final String title;
   final List<String> contacts;
+  final double headerHeight;
+  final double cellHeight;
 
-  const AddressBookSection({Key key, this.title, this.contacts})
+  const AddressBookSection(
+      {Key key,
+      this.title,
+      this.contacts,
+      this.headerHeight = 40,
+      this.cellHeight = 50})
       : super(key: key);
 
   @override
@@ -18,7 +25,7 @@ class AddressBookSection extends StatelessWidget {
           color: Colors.lightBlueAccent,
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
           width: BoxConstraints.expand().maxWidth,
-          height: 40,
+          height: headerHeight,
           child: Text(
             title,
             textAlign: TextAlign.left,
@@ -33,13 +40,15 @@ class AddressBookSection extends StatelessWidget {
           itemCount: contacts.length,
           itemBuilder: (BuildContext context, int index) {
             String contact = contacts[index];
-            return AddressBookRow(contact: contact, onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ContactInfo(contact)
-                ),
-              );
-            });
+            return AddressBookRow(
+                contact: contact,
+                height: cellHeight,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => ContactInfo(contact)),
+                  );
+                });
           },
         ),
       ],
